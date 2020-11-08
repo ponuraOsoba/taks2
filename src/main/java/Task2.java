@@ -1,32 +1,33 @@
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.stream.Stream;
+
+
 
 public class Task2 {
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
             int intsArray[] = parseIntArray(args);
             int sum = 13;
-
-            printPairs(intsArray,intsArray.length, sum);
+            printPairs(intsArray, sum);
         }
 
     private static int[] parseIntArray(String[] stringsArray) {
         return Stream.of(stringsArray).mapToInt(Integer::parseInt).toArray();
     }
 
-    static void printPairs(int intsArray[], int elementsNumber, int sum) {
-        HashMap<Integer, Integer> intPairMap = new HashMap<>();
+    private static void printPairs(int intsArray[], int minuend) {
+        int elementsNumber = intsArray.length;
+        Arrays.sort(intsArray);
         for(int i = 0; i < elementsNumber; i++){
-            int subtractDifference = sum - intsArray[i];
-            if (intPairMap.containsKey(subtractDifference)) {
-                int count = intPairMap.get(subtractDifference);
-                for(int j = 0; j < count; j++)
-                    System.out.print(subtractDifference + ", " + intsArray[i] + "\n");
-            }if (intPairMap.containsKey(intsArray[i])) {
-                intPairMap.put(intsArray[i], intPairMap.get(intsArray[i]) + 1);
-            } else {
-                intPairMap.put(intsArray[i], 1);
-            }
+          int subtrahend = intsArray[i];
+          int difference = minuend - subtrahend;
+          if(difference>=subtrahend && isPresent(difference,intsArray)){
+              System.out.println(subtrahend +", " +difference);
+          }
         }
+    }
+
+    private static boolean isPresent(int difference, int[] intsArray) {
+           return Arrays.binarySearch(intsArray,difference)>=0;
     }
 }
